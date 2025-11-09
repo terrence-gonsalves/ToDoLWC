@@ -1,19 +1,32 @@
 public with sharing class TodoItemController {
     
     @AuraEnabled(cacheable=true)
-    public static List<TodoItem__c> getTodoItems() {}
+    public static List<Todo_Item__c> getTodoItems() {}
 
     @AuraEnabled
-    public static void createTodoItem(TodoItem__c todoItem) {}
+    public static Todo_Item__c createTodoItem(
+        String title,
+        String description,
+        Date dueDate,
+        String priority,
+        String category
+    ) {}
 
     @AuraEnabled
     public static void deleteTodoItem(Id todoItemId) {}
 
     @AuraEnabled
-    public static void updateTodoItem(TodoItem__c todoItem) {}
+    public static Todo_Item__c updateTodoItem(
+        Id todoItemId, 
+        String title, 
+        String description, 
+        Date dueDate, 
+        String priority, 
+        String category
+    ) {}
 
     @AuraEnabled
-    public static void toggleTodoItem(Id todoItemId, Boolean isComplete) {}
+    public static Todo_Item__c updateCompletionStatus(Id todoItemId, Boolean isComplete) {}
 }
 
 /*
