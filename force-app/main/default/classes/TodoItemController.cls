@@ -1,7 +1,13 @@
 public with sharing class TodoItemController {
     
     @AuraEnabled(cacheable=true)
-    public static List<Todo_Item__c> getTodoItems() {}
+    public static List<Todo_Item__c> getTodoItems() {
+        return [SELECT Id, Name, Description__c, Due_Date__c, Priority__c, Category__c, Is_Completed__c, Completed_Date__c, OwnerId    
+                FROM Todo_Item__c 
+                WHERE OwnerId = :UserInfo.getUserId()
+                WITH USER_MODE
+                ORDER BY Due_Date__c ASC];
+    }
 
     @AuraEnabled
     public static Todo_Item__c createTodoItem(
