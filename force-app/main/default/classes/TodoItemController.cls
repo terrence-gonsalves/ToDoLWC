@@ -16,7 +16,9 @@ public with sharing class TodoItemController {
         Date dueDate,
         String priority,
         String category
-    ) {}
+    ) { 
+        return null; 
+    }
 
     @AuraEnabled
     public static void deleteTodoItem(Id todoItemId) {}
@@ -29,10 +31,14 @@ public with sharing class TodoItemController {
         Date dueDate, 
         String priority, 
         String category
-    ) {}
+    )  {
+        return null;
+    }
 
     @AuraEnabled
-    public static Todo_Item__c updateCompletionStatus(Id todoItemId, Boolean isComplete) {}
+    public static Todo_Item__c updateCompletionStatus(Id todoItemId, Boolean isComplete) { 
+        return null; 
+    }
 }
 
 /*

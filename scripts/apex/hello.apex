@@ -5,6 +5,8 @@
 // You can also execute the entire file by running the command:
 //     SFDX: Execute Anonymous Apex with Editor Contents
 
-string tempvar = 'Enter_your_name_here';
-System.debug('Hello World!');
-System.debug('My name is ' + tempvar);
+List<Todo_Item__c> tasks = TodoItemController.getTodoItems();
+System.debug('Number of tasks: ' + tasks.size());
+for(Todo_Item__c task : tasks) {
+    System.debug('Task: ' + task.Name + ' - Due: ' + task.Due_Date__c);
+}
