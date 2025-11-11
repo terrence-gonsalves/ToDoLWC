@@ -17,7 +17,42 @@ public with sharing class TodoItemController {
         String priority,
         String category
     ) { 
-        return null; 
+        if (String.isBlank(title)) {
+            throw new AuraHandledException('Title is required');
+        }
+
+        if (dueDate == null) {
+            throw new AuraHandledException('Due date is required');
+        }
+
+        if (String.isBlank(priority)) {
+            throw new AuraHandledException('Priority is required');
+        }
+
+        String normalizedPriority = priority?.trim();
+
+        if (normalizedPriority != 'Low' && normalizedPriority != 'Medium' && normalizedPriority != 'High') {
+            throw new AuraHandledException('Priority must be one of the following: Low, Medium, High');
+        }
+
+        Todo_Item__c todoItem = new Todo_Item__c(
+            Name = title.trim(),
+            Description__c = String.isBlank(description) ? null : description.trim(),
+            Due_Date__c = dueDate,
+            Priority__c = String.isBlank(priority) ? null : priority.trim(),
+            Category__c = normalizedPriority,
+            Is_Completed__c = false,
+            Completed_Date__c = null
+        );
+
+        try {
+            insert as user todoItem;
+            return todoItem;
+        } catch (Exception e) {
+            System.debug('Error creating task: ' + e.getMessage());
+            
+            throw new AuraHandledException('Could not create task: ' + e.getMessage());
+        }
     }
 
     @AuraEnabled
