@@ -50,8 +50,8 @@ public with sharing class TodoItemController {
     ) {
         validateTaskFields(title, dueDate, priority);
 
-        String normalizedPriority = validateAndNormalizePriority(priority);
-        String normalizedCategory = validateAndNormalizeCategory(category);
+        String normalizedPriority = validateAndNormalisePriority(priority);
+        String normalizedCategory = validateAndNormaliseCategory(category);
 
         Todo_Item__c todoItem = new Todo_Item__c(
             Name = safeTrim(title),
@@ -113,8 +113,8 @@ public with sharing class TodoItemController {
 
         validateTaskFields(title, dueDate, priority); 
         
-        String normalizedPriority = validateAndNormalizePriority(priority);
-        String normalizedCategory = validateAndNormalizeCategory(category);
+        String normalizedPriority = validateAndNormalisePriority(priority);
+        String normalizedCategory = validateAndNormaliseCategory(category);
 
         List<Todo_Item__c> tasks = [
             SELECT Id, Name, Description__c, Due_Date__c, Priority__c, Category__c, Is_Completed__c, Completed_Date__c 
@@ -185,14 +185,14 @@ public with sharing class TodoItemController {
     }
 
     /**
-     * Validates and normalizes priority value
+     * Validates and normalises priority value
      * @param priority Priority string to validate
      * @return Normalized priority value
      * @throws AuraHandledException if priority is invalid
      * 
      * @return String
      */
-    private static String validateAndNormalizePriority(String priority) {        
+    private static String validateAndNormalisePriority(String priority) {        
         String normalizedPriority = safeTrim(priority);
 
         if (!VALID_PRIORITIES.contains(normalizedPriority)) {
@@ -203,14 +203,14 @@ public with sharing class TodoItemController {
     }
 
     /**
-     * Validates and normalizes category value
+     * Validates and normalises category value
      * @param category Category string to validate
      * @return Normalized category value
      * @throws AuraHandledException if category is invalid
      * 
      * @return String
      */
-    private static String validateAndNormalizeCategory(String category) {
+    private static String validateAndNormaliseCategory(String category) {
         String normalizedCategory = safeTrim(category);
 
         if (!VALID_CATEGORIES.contains(normalizedCategory)) {
