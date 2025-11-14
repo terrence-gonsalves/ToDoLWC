@@ -7,8 +7,7 @@ public with sharing class TodoItemController {
     };
 
     private static final Set<String> VALID_CATEGORIES = new Set<String> {
-        'Work', 'Personal', 'Health and Wellness', 'Family',
-        'Learning', 'Household', 'Hobbies', 'Financial', 'Other'
+        'Work', 'Personal', 'Health and Wellness', 'Family', 'Learning', 'Household', 'Hobbies', 'Financial', 'Other'
     };
 
     /* Public Methods */
@@ -50,15 +49,15 @@ public with sharing class TodoItemController {
     ) {
         validateTaskFields(title, dueDate, priority);
 
-        String normalizedPriority = validateAndNormalisePriority(priority);
-        String normalizedCategory = validateAndNormaliseCategory(category);
+        String normalisedPriority = validateAndNormalisePriority(priority);
+        String normalisedCategory = validateAndNormaliseCategory(category);
 
         Todo_Item__c todoItem = new Todo_Item__c(
             Name = safeTrim(title),
             Description__c = String.isBlank(description) ? null : safeTrim(description),
             Due_Date__c = dueDate,
-            Priority__c = normalizedPriority,
-            Category__c = normalizedCategory,
+            Priority__c = normalisedPriority,
+            Category__c = normalisedCategory,
             Is_Completed__c = false,
             Completed_Date__c = null
         );
@@ -82,7 +81,25 @@ public with sharing class TodoItemController {
      *
      */
     @AuraEnabled
-    public static void deleteTodoItem(Id todoItemId) {}
+    public static void deleteTodoItem(Id todoItemId) {
+        if (todoItemId == null) {
+            throw new AuraHandledException('Todo item ID is required');
+        }
+
+        List<Todo_Item__c> tasks = [SELECT Id FROM Todo_Item__c WHERE Id = :todoItemId WITH USER_MODE];
+
+        if (tasks.isEmpty()) {
+            throw new AuraHandledException('Task not found or you do not have access');
+        }
+
+        try {
+            delete as user tasks;
+        } catch (Exception e) {
+            System.debug('Error deleting Todo item: ' + e.getMessage());
+
+            throw new AuraHandledException('Could not delete Todo item: ' + e.getMessage());
+        }
+    }
 
     /**
      * Update a todo item
@@ -106,10 +123,7 @@ public with sharing class TodoItemController {
         String priority, 
         String category
     )  {
-
-        if (todoItemId == null) {
-            throw new AuraHandledException('Todo item ID is required');
-        }
+        validateTodoId(todoItemId);
 
         validateTaskFields(title, dueDate, priority); 
         
@@ -156,7 +170,35 @@ public with sharing class TodoItemController {
      */
     @AuraEnabled
     public static Todo_Item__c updateCompletionStatus(Id todoItemId, Boolean isComplete) { 
-        return null; 
+        validateTodoId(todoItemId);
+
+        if (isComplete == null) {
+            throw new AuraHandledException('Completion status is required');
+        }
+
+        List<Todo_Item__c> tasks = [
+            SELECT Id, Name, Description__c, Due_Date__c, Priority__c, Category__c, Is_Completed__c, Completed_Date__c 
+            FROM Todo_Item__c 
+            WHERE Id = :todoItemId 
+            WITH USER_MODE
+        ];
+
+        if (tasks.isEmpty()) {
+            throw new AuraHandledException('Task not found or you do not have access');
+        }
+
+        Todo_Item__c existingTask = tasks[0];
+
+        existingTask.Is_Completed__c = isComplete;
+        existingTask.Completed_Date__c = isComplete ? Date.today() : null;
+
+        try {
+            update as user existingTask;
+            return existingTask; 
+        } catch (Exception e) {
+            System.debug('Error updating task completion status: ' + e.getMessage());
+            throw new AuraHandledException('Could not update task completion status: ' + e.getMessage());
+        }
     }
 
     /* Private Methods */
@@ -181,6 +223,19 @@ public with sharing class TodoItemController {
 
         if (String.isBlank(priority)) {
             throw new AuraHandledException('Priority is required');
+        }
+    }
+
+    /**
+     * Validates required task fields
+     * @param Id Task Id
+     * @throws AuraHandledException if validation fails
+     * 
+     * @return void
+     */
+    private static void validateTodoId(Id todoItemId) {
+        if (todoItemId == null) {
+            throw new AuraHandledException('Todo item ID is required');
         }
     }
 
@@ -211,13 +266,13 @@ public with sharing class TodoItemController {
      * @return String
      */
     private static String validateAndNormaliseCategory(String category) {
-        String normalizedCategory = safeTrim(category);
+        String normalisedCategory = safeTrim(category);
 
-        if (!VALID_CATEGORIES.contains(normalizedCategory)) {
+        if (!VALID_CATEGORIES.contains(normalisedCategory)) {
             throw new AuraHandledException('Invalid category');
         }
 
-        return normalizedCategory;
+        return normalisedCategory;
     }
 
     /**
