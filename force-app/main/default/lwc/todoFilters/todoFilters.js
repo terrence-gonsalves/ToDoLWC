@@ -19,6 +19,6 @@ export default class TodoFilters extends LightningElement {
         const filter = event.target.dataset.filter;
 
         //this.currentFilter = filter;
-        this.dispatchEvent(new CustomEvent('filterchange', { detail: filter }));
+        this.dispatchEvent(new CustomEvent('filterchange', { detail: { filter } }));
     }
 }
