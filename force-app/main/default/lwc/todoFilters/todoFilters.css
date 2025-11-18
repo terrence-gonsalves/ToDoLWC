@@ -1,0 +1,16 @@
+.slds-button-group {
+    padding: 1rem;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .slds-button-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .slds-button {
+        width: 100%;
+    }
+}

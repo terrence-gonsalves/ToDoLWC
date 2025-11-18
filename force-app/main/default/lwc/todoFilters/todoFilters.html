@@ -5,7 +5,7 @@
             data-filter="all"
             label="All"
             title="Show all tasks"
-            onclick={handleFilterChange}>
+            onclick={handleFilterValue}>
         </lightning-button>
 
         <lightning-button
@@ -13,7 +13,7 @@
             data-filter="active"
             label="Active"
             title="Show active tasks"
-            onclick={handleFilterChange}>
+            onclick={handleFilterValue}>
         </lightning-button>
 
         <lightning-button
@@ -21,7 +21,7 @@
             data-filter="completed"
             label="Completed"
             title="Show completed tasks"
-            onclick={handleFilterChange}>
+            onclick={handleFilterValue}>
         </lightning-button>
     </lightning-button-group>
 </template>
