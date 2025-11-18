@@ -1,0 +1,27 @@
+<template>
+    <lightning-button-group aria-label="Filter tasks by status">
+        <lightning-button
+            class={allButtonClass}
+            data-filter="all"
+            label="All"
+            title="Show all tasks"
+            onclick={handleFilterValue}>
+        </lightning-button>
+
+        <lightning-button
+            class={activeButtonClass}
+            data-filter="active"
+            label="Active"
+            title="Show active tasks"
+            onclick={handleFilterValue}>
+        </lightning-button>
+
+        <lightning-button
+            class={completedButtonClass}
+            data-filter="completed"
+            label="Completed"
+            title="Show completed tasks"
+            onclick={handleFilterValue}>
+        </lightning-button>
+    </lightning-button-group>
+</template>
