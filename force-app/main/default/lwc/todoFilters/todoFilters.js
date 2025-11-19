@@ -15,10 +15,9 @@ export default class TodoFilters extends LightningElement {
         return this.currentFilter === 'completed' ? 'slds-is-active' : '';
     }
 
-    handleFilterValue(event) {
+    handleFilterChange(event) {
         const filter = event.target.dataset.filter;
-
-        //this.currentFilter = filter;
+        
         this.dispatchEvent(new CustomEvent('filterchange', { detail: { filter } }));
     }
 }

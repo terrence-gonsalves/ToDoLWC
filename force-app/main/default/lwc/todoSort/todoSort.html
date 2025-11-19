@@ -1,0 +1,11 @@
+<template>
+    <lightning-combobox
+        label="Sort By"
+        name="sortBy"
+        value={currentSort}
+        options={sortOptions}
+        onchange={handleSortChange}
+        placeholder="Select a sort option"
+        variant="label-hidden"
+    ></lightning-combobox>
+</template>
