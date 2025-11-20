@@ -11,7 +11,7 @@ export default class TodoSort extends LightningElement {
     }
 
     handleSortChange(event) {
-        const sort = event.target.value;
+        const sort = event.detail.value;
 
         this.dispatchEvent(new CustomEvent('sortchange', { detail: { sort } }));
     }
