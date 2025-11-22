@@ -4,7 +4,7 @@ export default class TodoItem extends LightningElement {
     @api task;
     isDescriptionExpanded = false;
 
-    DESCRIPION_LIMIT = 100;
+    DESCRIPTION_LIMIT = 100;
 
     get taskCardClass() {
         return this.task.Is_Completed__c ? 'task-card completed' : 'task-card';
@@ -15,7 +15,7 @@ export default class TodoItem extends LightningElement {
     }
 
     get descriptionClass() {
-        return this.isDescriptionExpanded ? 'description-expanded' : 'description-collasped';
+        return this.isDescriptionExpanded ? 'description-expanded' : 'description-collapsed';
     }
 
     get priorityBadgeClass() {
@@ -41,15 +41,11 @@ export default class TodoItem extends LightningElement {
             return this.task.Description__c;
         }
 
-        return this.task.Description__c.substring(0, this.DESCRIPION_LIMIT) + '...';
+        return this.task.Description__c.substring(0, this.DESCRIPTION_LIMIT) + '...';
     }
 
     get readMoreLabel() {
         return this.isDescriptionExpanded ? 'Read Less' : 'Read More';
-    }
-
-    get handleReadMore() {
-        this.isDescriptionExpanded = !this.isDescriptionExpanded;
     }
 
     get formattedDueDate() {
@@ -64,36 +60,34 @@ export default class TodoItem extends LightningElement {
         });
     }
 
-    handleToggleComplete() {
+    handleReadMore() {
+        this.isDescriptionExpanded = !this.isDescriptionExpanded;
+    }
+
+    handleToggleComplete(event) {
         const isCompleted = event.target.checked;
 
-        const toggleCompleteEvent = new CustomEvent('togglecomplete', {
+        this.dispatchEvent(new CustomEvent('togglecomplete', {
             detail: {
                 taskId: this.task.Id,
                 isCompleted
             }
-        });
-
-        this.dispatchEvent(toggleCompleteEvent);
+        }));
     }
 
-    get handleDeleteTask() {
-        const deleteTaskEvent = new CustomEvent('deletetask', {
+    handleDeleteTask() {
+        this.dispatchEvent(new CustomEvent('deletetask', {
             detail: {
                 taskId: this.task.Id
             }
-        });
-
-        this.dispatchEvent(deleteTaskEvent);
+        }));
     }
 
-    get handleEditTask() {
-        const editTaskEvent = new CustomEvent('edittask', {
+    handleEditTask() {
+        this.dispatchEvent(new CustomEvent('edittask', {
             detail: {
                 taskId: this.task.Id
             }
-        });
-
-        this.dispatchEvent(editTaskEvent);
+        }));
     }
 }

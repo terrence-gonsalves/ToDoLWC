@@ -22,7 +22,7 @@
     flex-shrink: 0;
 }
 
-.task-content {
+.task-item {
     flex-grow: 1;
 }
 
@@ -82,21 +82,6 @@
 
 .task-actions {
     flex-shrink: 0;
-}
-
-.priority-high {
-    background-color: #c23934;
-    color: white;
-}
-
-.priority-medium {
-    background-color: #fe9339;
-    color: white;
-}
-
-.priority-low {
-    background-color: #4bca81;
-    color: white;
 }
 
 @media (max-width: 768px) {
