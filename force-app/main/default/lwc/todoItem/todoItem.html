@@ -1,0 +1,50 @@
+<template>
+    <div class={taskCard}>
+        <div class="task-checkbox">
+            <lightning-input 
+                type="checkbox"
+                checked={task.Is_Completed__c}
+                onchange={handleToggleComplete}
+                label=""
+                aria-label="Mark task as complete">
+            </lightning-input>
+        </div>
+
+        <div class="task-item">
+            <div class="task-header">
+                <h3 class={taskTitle}>{task.Name}</h3>
+                <lightning-badge 
+                    label={task.Priority__c}
+                    class={priorityBadge}>
+                </lightning-badge>
+            </div>
+
+            <template lwc:if={task.Description__c}>
+                <p class="task-description">{task.Description__c}</p>
+            </template>
+
+            <div class="task-item-due">
+                <lightning-icon 
+                    icon-name="utility:event"
+                    size="x-small"
+                    alternative-text="Due date">
+                </lightning-icon>
+                <span>Due: {formattedDueDate}</span>
+            </div>
+        </div>
+
+        <div class="task-actions">
+            <template lwc:if={task.Is_Completed__c}>
+                <lightning-button-icon
+                    icon-name="utility:delete"
+                    title="Delete task"
+                    alternative-text="Delete task"
+                    variant="destructive"
+                    onclick={handleDeleteTask}>
+                </lightning-button-icon>
+            </template>
+            <template lwc:else>
+            </template>
+        </div>
+    </div>    
+</template>
