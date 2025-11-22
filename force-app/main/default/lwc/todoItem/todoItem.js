@@ -32,13 +32,22 @@ export default class TodoItem extends LightningElement {
     get formattedDueDate() {
         const date = new Date(this.task.Due_Date__c);
 
-        return date.toLocaleDateString();
+        if (!date) return '';
+
+        return date.toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'short', 
+            day: 'numeric' 
+        });
     }
 
     handleToggleComplete() {
+        const isCompleted = event.target.checked;
+
         const toggleCompleteEvent = new CustomEvent('togglecomplete', {
             detail: {
-                taskId: this.task.Id
+                taskId: this.task.Id,
+                isCompleted
             }
         });
 
