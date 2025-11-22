@@ -1,0 +1,67 @@
+<template>
+    <div class={taskCardClass}>
+        <div class="task-checkbox">
+            <lightning-input 
+                type="checkbox"
+                checked={task.Is_Completed__c}
+                onchange={handleToggleComplete}
+                label=""
+                aria-label="Mark task as complete">
+            </lightning-input>
+        </div>
+
+        <div class="task-item">
+            <div class="task-header">
+                <h3 class={taskTitleClass}>{task.Name}</h3>
+                <lightning-badge 
+                    label={task.Priority__c}
+                    class={priorityBadgeClass}>
+                </lightning-badge>
+            </div>
+
+            <template lwc:if={task.Description__c}>
+                <div class="task-description">   
+                    <p class={descriptionClass}>
+                        {displayDescription}
+                    </p>
+
+                    <template lwc:if={showReadMore}>
+                        <button
+                            class="read-more-button"
+                            onclick={handleReadMore}>
+                            {readMoreLabel}
+                        </button>
+                    </template>
+                </div>
+            </template>
+
+            <div class="task-item-due">
+                <lightning-icon 
+                    icon-name="utility:event"
+                    size="x-small"
+                    alternative-text="Due date">
+                </lightning-icon>
+                <span>Due: {formattedDueDate}</span>
+            </div>
+        </div>
+
+        <div class="task-actions">
+            <template lwc:if={task.Is_Completed__c}>
+                <lightning-button-icon
+                    icon-name="utility:delete"
+                    alternative-text="Delete"
+                    title="Delete"
+                    onclick={handleDeleteTask}>
+                </lightning-button-icon>
+            </template>
+            <template lwc:else>
+                <lightning-button-icon
+                    icon-name="utility:edit"
+                    alternative-text="Edit"
+                    title="Edit"
+                    onclick={handleEditTask}>
+                </lightning-button-icon>
+            </template>
+        </div>
+    </div>    
+</template>
