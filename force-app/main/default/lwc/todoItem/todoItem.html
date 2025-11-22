@@ -1,5 +1,5 @@
 <template>
-    <div class={taskCard}>
+    <div class={taskCardClass}>
         <div class="task-checkbox">
             <lightning-input 
                 type="checkbox"
@@ -12,10 +12,10 @@
 
         <div class="task-item">
             <div class="task-header">
-                <h3 class={taskTitle}>{task.Name}</h3>
+                <h3 class={taskTitleClass}>{task.Name}</h3>
                 <lightning-badge 
                     label={task.Priority__c}
-                    class={priorityBadge}>
+                    class={priorityBadgeClass}>
                 </lightning-badge>
             </div>
 
@@ -43,6 +43,12 @@
                 </lightning-button-icon>
             </template>
             <template lwc:else>
+                <lightning-button-icon
+                    icon-name="utility:edit"
+                    alternative-text="Edit"
+                    title="Edit"
+                    onclick={handleEditTask}>
+                </lightning-button-icon>
             </template>
         </div>
     </div>    
