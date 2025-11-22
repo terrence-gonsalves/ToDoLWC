@@ -49,14 +49,6 @@
     margin: 0.5rem 0;
 }
 
-.description-collapsed {
-    /* Could add max-height or other styling */
-}
-
-.description-expanded {
-    /* Fully visible */
-}
-
 .read-more-btn {
     background: none;
     border: none;
