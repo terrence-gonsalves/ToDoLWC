@@ -2,6 +2,9 @@ import { LightningElement, api } from 'lwc';
 
 export default class TodoItem extends LightningElement {
     @api task;
+    isDescriptionExpanded = false;
+
+    DESCRIPION_LIMIT = 100;
 
     get taskCardClass() {
         return this.task.Is_Completed__c ? 'task-card completed' : 'task-card';
@@ -11,22 +14,42 @@ export default class TodoItem extends LightningElement {
         return this.task.Is_Completed__c ? 'task-title completed' : 'task-title';
     }
 
-    get priorityBadgeClass() {
-        const priorityClass = '';
-        
-        switch (this.task.Priority__c.toLowerCase()) {
-            case 'high':
-                priorityClass = 'high-priority'; 
-                break;
-            case 'medium':
-                priorityClass = 'medium-priority';
-                break;
-            case 'low':
-                priorityClass = 'low-priority';
-                break;
-        }   
+    get descriptionClass() {
+        return this.isDescriptionExpanded ? 'description-expanded' : 'description-collasped';
+    }
 
-        return priorityClass;
+    get priorityBadgeClass() {
+        const priorityMap = {
+            'High': 'slds-theme_error',
+            'Medium': 'slds-theme_warning',
+            'Low': 'slds-theme_success'
+        };
+
+        return priorityMap[this.task.Priority__c] || '';
+    }
+
+    get showReadMore() {
+        if (!this.task.Description__c) return false;
+
+        return this.task.Description__c.length > this.DESCRIPION_LIMIT;
+    }
+
+    get displayDescription() {
+        if (!this.task.Description__c) return '';
+
+        if (this.isDescriptionExpanded || !this.showReadMore) {
+            return this.task.Description__c;
+        }
+
+        return this.task.Description__c.substring(0, this.DESCRIPION_LIMIT) + '...';
+    }
+
+    get readMoreLabel() {
+        return this.isDescriptionExpanded ? 'Read Less' : 'Read More';
+    }
+
+    get handleReadMore() {
+        this.isDescriptionExpanded = !this.isDescriptionExpanded;
     }
 
     get formattedDueDate() {

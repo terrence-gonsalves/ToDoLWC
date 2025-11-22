@@ -20,7 +20,19 @@
             </div>
 
             <template lwc:if={task.Description__c}>
-                <p class="task-description">{task.Description__c}</p>
+                <div class="task-description">   
+                    <p class={descriptionClass}>
+                        {displayDescription}
+                    </p>
+
+                    <template lwc:if={showReadMore}>
+                        <button
+                            class="read-more-button"
+                            onclick={handleReadMore}>
+                            {readMoreLabel}
+                        </button>
+                    </template>
+                </div>
             </template>
 
             <div class="task-item-due">
