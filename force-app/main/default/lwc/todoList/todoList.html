@@ -1,0 +1,23 @@
+<template>
+    <template lwc:if={hasTasks}>
+        <div class="task-list">
+            <template for:each={tasks} for:item="task">
+                <c-todo-item
+                    key={task.Id}
+                    task={task}
+                    ontogglecomplete={handleToggleComplete}
+                    onedittask={handleEditTask}
+                    ondeletetask={handleDeleteTask}>
+                </c-todo-item>               
+            </template>
+        </div>
+    </template>
+
+    <!-- empty state -->
+     <template lwc:else>
+         <div class="empty-state">
+             <lightning-icon icon-name="standard:task" size="large"></lightning-icon>
+             <p>You have no tasks.</p>
+        </div>
+     </template>
+</template>
