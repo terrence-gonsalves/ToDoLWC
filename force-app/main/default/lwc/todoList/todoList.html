@@ -1,0 +1,38 @@
+<template>
+    <template lwc:if={hasTasks}>
+        <div class="task-list">
+            <template for:each={tasks} for:item="task">
+                <c-todo-item
+                    key={task.Id}
+                    task={task}
+                    ontogglecomplete={handleToggleComplete}
+                    onedittask={handleEditTask}
+                    ondeletetask={handleDeleteTask}>
+                </c-todo-item>               
+            </template>
+        </div>
+    </template>
+
+    <!-- empty state -->
+     <template lwc:else>
+         <div class="empty-state">
+            <div class="empty-state-icon">
+                <lightning-icon 
+                    icon-name="custom:custom78" 
+                    size="large" 
+                    alternative-text="No Tasks">
+                </lightning-icon>          
+            </div>
+
+            <h2 class="empty-state-title">Your task list is empty</h2>
+            <p class="empty-state-message">
+                Get started by adding a task to Task Trackr!
+            </p>
+            <lightning-icon
+                icon-name="utility:down"
+                size="small"
+                alternative-text="Arrow pointing to add button">
+            </lightning-icon>
+        </div>
+     </template>
+</template>
