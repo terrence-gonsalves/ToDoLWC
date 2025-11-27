@@ -19,7 +19,9 @@ export default class TodoModal extends LightningElement {
     }
 
     get saveButonLabel() {
-        return this.mode === 'create' ? 'Create' : 'Save';
+        if (this.isLoading) return 'Saving...';
+
+        return this.mode === 'create' ? 'Create Task' : 'Save Changes';
     }
 
     get priorityOptions() {
@@ -45,11 +47,13 @@ export default class TodoModal extends LightningElement {
     }
 
     @api populateForm(task) {
-        this.title = task.Title || '';
-        this.description = task.Description || '';
-        this.dueDate = task.DueDate || '';
-        this.priority = task.Priority || '';
-        this.category = task.Category || '';
+        if (task) {
+            this.title = task.Name || '';
+            this.description = task.Description__c || '';
+            this.dueDate = task.DueDate__c || '';
+            this.priority = task.Priority__c || 'Medium';
+            this.category = task.Category__c || '';
+        }
     }
 
     handleTitleChange(event) {
@@ -65,17 +69,17 @@ export default class TodoModal extends LightningElement {
     }
 
     handlePriorityChange(event) {
-        this.priority = event.target.value;
+        this.priority = event.detail.value;
     }
 
     handleCategoryChange(event) {
-        this.category = event.target.value;
+        this.category = event.detail.value;
     }
 
     validateForm() {
-        errorMessage = '';
+        this.errorMessage = '';
         
-        if (!this.title) {
+        if (!this.title || this.title.trim() === '') {
             this.errorMessage = 'Title is required';
             return false;
         }
@@ -92,31 +96,33 @@ export default class TodoModal extends LightningElement {
     }
 
     handleSave() {
-        if (this.validateForm()) {
-            this.isLoading = true;
-            this.errorMessage = ''; 
-
-            this.dispatchEvent(new CustomEvent('save', {
-                detail: {
-                    title: this.title,
-                    description: this.description,
-                    dueDate: this.dueDate,
-                    priority: this.priority,
-                    category: this.category
-                }
-            }));
+        if (!this.validateForm()) {
+            return;
         }
+        
+        this.dispatchEvent(new CustomEvent('save', {
+            detail: {
+                title: this.title.trim(),
+                description: this.description.trim(),
+                dueDate: this.dueDate,
+                priority: this.priority,
+                category: this.category
+            }
+        }));
+
+        this.resetForm();
     }
 
     handleClose() {
         this.dispatchEvent(new CustomEvent('close'));
+        this.resetForm();
     }
 
     resetForm() {
         this.title = '';
         this.description = '';
         this.dueDate = '';
-        this.priority = '';
+        this.priority = 'Medium';
         this.category = '';
         this.errorMessage = '';
         this.isLoading = false;
