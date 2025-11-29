@@ -10,7 +10,6 @@
                         variant="bare-inverse"
                         class="slds-modal__close"
                         onclick={handleClose}>
-                        <label class="sr-only">Close</label>
                     </lightning-button-icon>
                     <h2 class="slds-modal__title slds-hyphenate">{modalTitle}</h2>
                 </header>
@@ -77,8 +76,8 @@
                     </lightning-button>
                     <lightning-button 
                         variant="brand" 
-                        label={saveButonLabel}
-                        title={saveButonLabel} 
+                        label={saveButtonLabel}
+                        title={saveButtonLabel} 
                         onclick={handleSave} 
                         disabled={isLoading}
                         class="slds-var-m-left_x-small">

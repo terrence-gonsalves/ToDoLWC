@@ -8,7 +8,7 @@ export default class TodoModal extends LightningElement {
     title = '';
     description = '';
     dueDate = '';
-    priority = '';
+    priority = 'Medium';
     category = '';
 
     isLoading = false;
@@ -18,7 +18,7 @@ export default class TodoModal extends LightningElement {
         return this.mode === 'create' ? 'Create Task' : 'Edit Task';
     }
 
-    get saveButonLabel() {
+    get saveButtonLabel() {
         if (this.isLoading) return 'Saving...';
 
         return this.mode === 'create' ? 'Create Task' : 'Save Changes';
@@ -50,7 +50,7 @@ export default class TodoModal extends LightningElement {
         if (task) {
             this.title = task.Name || '';
             this.description = task.Description__c || '';
-            this.dueDate = task.DueDate__c || '';
+            this.dueDate = task.Due_Date__c || '';
             this.priority = task.Priority__c || 'Medium';
             this.category = task.Category__c || '';
         }
@@ -93,6 +93,8 @@ export default class TodoModal extends LightningElement {
             this.errorMessage = 'Priority is required';
             return false;
         }
+
+        return true;
     }
 
     handleSave() {
