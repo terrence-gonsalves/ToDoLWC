@@ -15,17 +15,17 @@
         <c-todo-list
             tasks={filteredTasks}
             ontogglecomplete={handleToggleComplete}
-            onedittask={handleEditTask}
-            ondeleteask={handleDeleteTask}>
+            onedittask={handleEdit}
+            ondeleteask={handleDelete}>
         </c-todo-list>
 
-        <c-todo-fab oncreatetask={handleCreateTask}></c-todo-fab>
+        <c-todo-fab oncreatetask={handleCreate}></c-todo-fab>
 
         <c-todo-modal
             is-open={isModalOpen}
             mode={modalMode}
             onsave={handleSave}
-            onclose={handleClose}>
+            onclose={handleCloseModal}>
         </c-todo-modal>
     </div>
 </template>

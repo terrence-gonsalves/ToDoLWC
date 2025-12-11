@@ -65,12 +65,12 @@ export default class TodoApp extends LightningElement {
         this.currentSort = event.target.value;
     }
 
-    handleCreateTask() {
+    handleCreate() {
         this.modalMode = 'create';
         this.isModalOpen = true;
     }
 
-    handleEditTask(event) {
+    handleEdit(event) {
         this.selectedTaskId = event.detail.taskId;
         this.modalMode = 'edit';
         this.isModalOpen = true;
@@ -110,17 +110,35 @@ export default class TodoApp extends LightningElement {
         }
     }
 
-    handleDeleteTask(event) {}
-    
-    handleToggleComplete(event) {
+    async handleDelete(event) {
         const taskId = event.detail.taskId;
 
-        updateCompletionStatus({ id: taskId }).then(() => {
-            this.showToast('Success', 'Task completed', 'success');
-        });
+        try {
+            await deleteTodoItem({ todoItemId: taskId });
+            await refreshApex(this.wiredTasksResult);
+
+            this.showToast('Success', 'Task deleted successfully', 'success');
+        } catch (err) {
+            this.showToast('Error', err.body?.message || 'Failed to delete task', 'error');
+        }
+    }
+    
+    async handleToggleComplete(event) {
+        const { taskId, isComplete } = event.detail;
+
+        try {
+            await updateCompletionStatus({ 
+                todoItemId: taskId,
+                isComplete: isComplete 
+            });
+
+            await refreshApex(this.wiredTasksResult);
+        } catch (err) {
+            this.showToast('Error', err.body?.message || 'Failed to update task completion status', 'error');
+        }
     }
 
-    handleCancel() {
+    handleCloseModal() {
         this.isModalOpen = false;
         this.selectedTaskId = null;
         this.modalMode = 'create';
