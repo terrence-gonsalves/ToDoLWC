@@ -17,11 +17,11 @@ export default class TodoApp extends LightningElement {
     modalMode = 'create';
     selectedTaskId = null;
 
-    wiredTaskResult;
+    wiredTasksResult;
 
     @wire(getTodoItems)
     wiredTasks(result) {
-        this.wiredTaskResult = result;
+        this.wiredTasksResult = result;
 
         if (result.data) {
             this.allTasks = result.data;
@@ -30,7 +30,32 @@ export default class TodoApp extends LightningElement {
         }
     }
 
-    get filteredTasks() {}
+    get filteredTasks() {
+        if (!this.allTasks) return [];
+
+        let tasks = [...this.allTasks];
+
+        if (this.currentFilter === 'active') {
+            tasks = tasks.filter(task => !task.Is_Completed__c);
+        } else if (this.currentFilter === 'completed') {
+            tasks = tasks.filter(task => task.Is_Completed__c);
+        }
+
+        if (this.currentSort === 'dueDate') {
+            tasks.sort((a, b) => {
+                const dateA = new Date(a.Due_Date__c);
+                const dateB = new Date(b.Due_Date__c);
+                return dateA - dateB;
+            });
+        } else if (this.currentSort === 'priority') {
+            const priorityOrder = { 'High': 1, 'Medium': 2, 'Low': 3 };
+            tasks.sort((a, b) => {
+                return priorityOrder[a.Priority__c] - priorityOrder[b.Priority__c];
+            });
+        }
+        
+        return tasks;
+    }
 
     handleFilterChange(event) {
         this.currentFilter = event.target.value;
@@ -51,21 +76,49 @@ export default class TodoApp extends LightningElement {
         this.isModalOpen = true;
     }
 
-    handleSave(event) {
-        const task = event.detail.task;
+    async handleSave(event) {
+        const formData = event.detail;
 
-        if (this.selectedTaskId) {
-            updateTodoItem({ id: this.selectedTaskId, task }).then(() => {
-                this.isModalOpen = false;
-            });
-        } else {
-            createTodoItem({ task }).then(() => {
-                this.isModalOpen = false;
-            });
+        try {
+            if (this.modalMode === 'create') {
+                await createTodoItem({
+                    title: formData.title,
+                    description: formData.description,
+                    dueDate: formData.dueDate,
+                    priority: formData.priority,
+                    category: formData.category
+                });
+
+                this.showToast('Success', 'Task created successfully', 'success');
+            } else { //edit mode
+                await updateTodoItem({
+                    todoItemId: this.selectedTaskId,
+                    title: formData.title,
+                    description: formData.description,
+                    dueDate: formData.dueDate,
+                    priority: formData.priority,
+                    category: formData.category
+                });
+                
+                this.showToast('Success', 'Task updated successfully', 'success');
+            }
+
+            await refreshApex(this.wiredTasksResult);
+            this.isModalOpen = false;
+        } catch (err) {
+            this.showToast('Error', err.body?.message || 'Failed to save task', 'error');
         }
     }
 
     handleDeleteTask(event) {}
+    
+    handleToggleComplete(event) {
+        const taskId = event.detail.taskId;
+
+        updateCompletionStatus({ id: taskId }).then(() => {
+            this.showToast('Success', 'Task completed', 'success');
+        });
+    }
 
     handleCancel() {
         this.isModalOpen = false;
@@ -75,13 +128,5 @@ export default class TodoApp extends LightningElement {
 
     showToast(title, message, variant) {
         this.dispatchEvent(new ShowToastEvent({ title, message, variant }));
-    }
-
-    handleToggleComplete(event) {
-        const taskId = event.detail.taskId;
-
-        updateCompletionStatus({ id: taskId }).then(() => {
-            this.showToast('Success', 'Task completed', 'success');
-        });
     }
 }
