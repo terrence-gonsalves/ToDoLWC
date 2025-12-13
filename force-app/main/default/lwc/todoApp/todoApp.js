@@ -25,7 +25,7 @@ export default class TodoApp extends LightningElement {
 
         if (result.data) {
             this.allTasks = result.data;
-        } else if (error) {
+        } else if (result.error) {
             this.showToast('Error', 'Error fetching tasks', 'error');
         }
     }
@@ -71,9 +71,25 @@ export default class TodoApp extends LightningElement {
     }
 
     handleEdit(event) {
-        this.selectedTaskId = event.detail.taskId;
-        this.modalMode = 'edit';
-        this.isModalOpen = true;
+        const taskId = event.detail.taskId;
+
+        const task = this.allTasks.find(t => t.Id === taskId);
+
+        if (task) {
+            this.selectedTaskId = taskId;
+            this.modalMode = 'edit';
+            this.isModalOpen = true;
+
+            setTimeout(() => {
+                const modal = this.template.querySelector('c-todo-modal');
+
+                if (modal) {
+                    modal.populateForm(task);
+                }
+            }, 0);
+        } else {
+            this.showToast('Error', 'Task not found', 'error');
+        }
     }
 
     async handleSave(event) {
