@@ -42,31 +42,27 @@ export default class TodoApp extends LightningElement {
         }
 
         if (this.currentSort === 'dueDate') {
-            tasks.sort((a, b) => {
-                const dateA = new Date(a.Due_Date__c);
-                const dateB = new Date(b.Due_Date__c);
-                return dateA - dateB;
-            });
+            tasks.sort((a, b) => new Date(a.Due_Date__c) - new Date(b.Due_Date__c));
         } else if (this.currentSort === 'priority') {
             const priorityOrder = { 'High': 1, 'Medium': 2, 'Low': 3 };
-            tasks.sort((a, b) => {
-                return priorityOrder[a.Priority__c] - priorityOrder[b.Priority__c];
-            });
+           
+            tasks.sort((a, b) => priorityOrder[a.Priority__c] - priorityOrder[b.Priority__c]);
         }
         
         return tasks;
     }
 
     handleFilterChange(event) {
-        this.currentFilter = event.target.value;
+        this.currentFilter = event.detail.filter;
     }
 
     handleSortChange(event) {
-        this.currentSort = event.target.value;
+        this.currentSort = event.detail.sortBy;
     }
 
     handleCreate() {
         this.modalMode = 'create';
+        this.selectedTaskId = null;
         this.isModalOpen = true;
     }
 
@@ -157,7 +153,6 @@ export default class TodoApp extends LightningElement {
     handleCloseModal() {
         this.isModalOpen = false;
         this.selectedTaskId = null;
-        this.modalMode = 'create';
     }
 
     showToast(title, message, variant) {
