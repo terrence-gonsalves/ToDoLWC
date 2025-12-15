@@ -6,15 +6,15 @@ lightning-button-icon {
 }
 
 lightning-button-icon::part(button) {
-    width: 56px;
-    height: 56px;
-    border-radius: 50% !important;
-    background-color: #0176d3 !important;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    width: 64px !important;  /* Was 56px */
+    height: 64px !important;
+    border-radius: 50%;
+    background-color: #0176d3;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 lightning-button-icon:hover::part(button) {
-    background-color: #014486 !important;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+    background-color: #014486;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
     transform: scale(1.05);
 }
