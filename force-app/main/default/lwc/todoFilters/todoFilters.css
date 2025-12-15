@@ -3,7 +3,7 @@
 }
 
 .slds-button {
-    border-radius: 0.25rem !important; /* Less rounded */
+    border-radius: 0.25rem !important;
 }
 
 .slds-button.slds-is-active {
