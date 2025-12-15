@@ -52,6 +52,10 @@ export default class TodoApp extends LightningElement {
         return tasks;
     }
 
+    get isFiltered() {
+        return this.currentFilter !== 'all';
+    }
+
     handleFilterChange(event) {
         this.currentFilter = event.detail.filter;
     }

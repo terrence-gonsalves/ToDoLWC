@@ -14,7 +14,7 @@
     </template>
 
     <!-- empty state -->
-     <template lwc:else>
+     <template lwc:elseif={showEmptyState}>
          <div class="empty-state">
             <div class="empty-state-icon">
                 <lightning-icon 
@@ -28,11 +28,6 @@
             <p class="empty-state-message">
                 Get started by adding a task to Task Trackr!
             </p>
-            <lightning-icon
-                icon-name="utility:down"
-                size="small"
-                alternative-text="Arrow pointing to add button">
-            </lightning-icon>
         </div>
      </template>
 </template>
