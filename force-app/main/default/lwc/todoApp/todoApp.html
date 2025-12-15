@@ -1,0 +1,33 @@
+<template>
+    <div class="app-container">
+        <c-todo-header></c-todo-header>
+
+        <div class="controls-container">
+            <c-todo-filters
+                current-filter={currentFilter}
+                onfilterchange={handleFilterChange}>
+            </c-todo-filters>
+
+            <c-todo-sort
+                current-sort={currentSort}
+                onsortchange={handleSortChange}>
+            </c-todo-sort>
+        </div>
+
+        <c-todo-list
+            tasks={filteredTasks}
+            ontogglecomplete={handleToggleComplete}
+            onedittask={handleEdit}
+            ondeletetask={handleDelete}>
+        </c-todo-list>
+
+        <c-todo-fab oncreatetask={handleCreate}></c-todo-fab>
+
+        <c-todo-modal
+            is-open={isModalOpen}
+            mode={modalMode}
+            onsave={handleSave}
+            onclose={handleCloseModal}>
+        </c-todo-modal>
+    </div>
+</template>

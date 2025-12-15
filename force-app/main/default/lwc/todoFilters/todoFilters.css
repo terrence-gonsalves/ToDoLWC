@@ -2,6 +2,16 @@
     padding: 1rem;
 }
 
+.slds-button {
+    border-radius: 0.25rem !important;
+}
+
+.slds-button.slds-is-active {
+    background-color: #0176d3 !important;
+    color: white !important;
+    border-color: #0176d3 !important;
+}
+
 /* Mobile responsive */
 @media (max-width: 768px) {
     .slds-button-group {
