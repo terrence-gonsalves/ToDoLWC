@@ -2,15 +2,17 @@
     <div class="app-container">
         <c-todo-header></c-todo-header>
 
-        <c-todo-filters
-            current-filter={currentFilter}
-            onfilterchange={handleFilterChange}>
-        </c-todo-filters>
+        <div class="controls-container">
+            <c-todo-filters
+                current-filter={currentFilter}
+                onfilterchange={handleFilterChange}>
+            </c-todo-filters>
 
-        <c-todo-sort
-            current-sort={currentSort}
-            onsortchange={handleSortChange}>
-        </c-todo-sort>
+            <c-todo-sort
+                current-sort={currentSort}
+                onsortchange={handleSortChange}>
+            </c-todo-sort>
+        </div>
 
         <c-todo-list
             tasks={filteredTasks}

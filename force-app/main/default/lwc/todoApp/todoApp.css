@@ -4,3 +4,32 @@
     background-color: #f3f2f2;
     min-height: 100vh;
 }
+
+.controls-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1 rem;
+    background-color: white;
+}
+
+c-todo-filters {
+    flex: 0 0 auto;
+}
+
+c-todo-sort {
+    flex: 0 0 auto;
+    max-width: 250px;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .controls-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    c-todo-sort {
+        max-width: 100%;
+    }
+}
