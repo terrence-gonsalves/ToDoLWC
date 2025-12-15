@@ -4,15 +4,21 @@ export default class TodoFilters extends LightningElement {
     @api currentFilter = 'all';
 
     get allButtonClass() {
-        return this.currentFilter === 'all' ? 'slds-is-active' : '';
+        return this.currentFilter === 'all' 
+            ? 'slds-button slds-button_neutral slds-is-active' 
+            : 'slds-button slds-button_neutral';
     }
 
     get activeButtonClass() {
-        return this.currentFilter === 'active' ? 'slds-is-active' : '';
+        return this.currentFilter === 'active' 
+            ? 'slds-button slds-button_neutral slds-is-active' 
+            : 'slds-button slds-button_neutral';
     }
 
     get completedButtonClass() {
-        return this.currentFilter === 'completed' ? 'slds-is-active' : '';
+        return this.currentFilter === 'completed' 
+            ? 'slds-button slds-button_neutral slds-is-active' 
+            : 'slds-button slds-button_neutral';
     }
 
     handleFilterChange(event) {
