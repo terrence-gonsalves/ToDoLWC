@@ -140,12 +140,12 @@ export default class TodoApp extends LightningElement {
     }
     
     async handleToggleComplete(event) {
-        const { taskId, isComplete } = event.detail;
+        const { taskId, isCompleted } = event.detail;
 
         try {
             await updateCompletionStatus({ 
                 todoItemId: taskId,
-                isComplete: isComplete 
+                isComplete: isCompleted 
             });
 
             await refreshApex(this.wiredTasksResult);
