@@ -3,14 +3,13 @@
 }
 
 .slds-button {
-    border-radius: 0.25rem !important;
+    border-radius: 0.25rem !important; /* Less rounded */
 }
 
 .slds-button.slds-is-active {
     background-color: #0176d3 !important;
     color: white !important;
     border-color: #0176d3 !important;
-    font-weight: 600;
 }
 
 /* Mobile responsive */
