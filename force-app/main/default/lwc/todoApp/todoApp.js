@@ -42,14 +42,22 @@ export default class TodoApp extends LightningElement {
         }
 
         if (this.currentSort === 'dueDate') {
-            tasks.sort((a, b) => new Date(a.Due_Date__c) - new Date(b.Due_Date__c));
+            tasks.sort((a, b) => {
+                return new Date(a.Due_Date__c) - new Date(b.Due_Date__c);
+            });
         } else if (this.currentSort === 'priority') {
             const priorityOrder = { 'High': 1, 'Medium': 2, 'Low': 3 };
            
-            tasks.sort((a, b) => priorityOrder[a.Priority__c] - priorityOrder[b.Priority__c]);
+            tasks.sort((a, b) => {
+                return priorityOrder[a.Priority__c] - priorityOrder[b.Priority__c];
+            });
         }
         
         return tasks;
+    }
+
+    get isFiltered() {
+        return this.currentFilter !== 'all';
     }
 
     handleFilterChange(event) {
@@ -136,12 +144,12 @@ export default class TodoApp extends LightningElement {
     }
     
     async handleToggleComplete(event) {
-        const { taskId, isComplete } = event.detail;
+        const { taskId, isCompleted } = event.detail;
 
         try {
             await updateCompletionStatus({ 
                 todoItemId: taskId,
-                isComplete: isComplete 
+                isComplete: isCompleted 
             });
 
             await refreshApex(this.wiredTasksResult);

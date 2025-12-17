@@ -2,9 +2,14 @@ import { LightningElement, api } from 'lwc';
 
 export default class TodoList extends LightningElement {
     @api tasks = [];
+    @api isFiltered = false;
 
     get hasTasks() {
         return this.tasks && this.tasks.length > 0;
+    }
+
+    get showEmptyState() {
+        return !this.hasTasks && !this.isFiltered;
     }
 
     handleToggleComplete(event) {
