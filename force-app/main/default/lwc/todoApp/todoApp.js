@@ -42,11 +42,15 @@ export default class TodoApp extends LightningElement {
         }
 
         if (this.currentSort === 'dueDate') {
-            tasks.sort((a, b) => new Date(a.Due_Date__c) - new Date(b.Due_Date__c));
+            tasks.sort((a, b) => {
+                return new Date(a.Due_Date__c) - new Date(b.Due_Date__c);
+            });
         } else if (this.currentSort === 'priority') {
             const priorityOrder = { 'High': 1, 'Medium': 2, 'Low': 3 };
            
-            tasks.sort((a, b) => priorityOrder[a.Priority__c] - priorityOrder[b.Priority__c]);
+            tasks.sort((a, b) => {
+                return priorityOrder[a.Priority__c] - priorityOrder[b.Priority__c];
+            });
         }
         
         return tasks;
